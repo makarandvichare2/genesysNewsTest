@@ -2,7 +2,7 @@
   <div class="item-rank">{{ itemIndex }}.</div>
   <div class="item-content">
     <div class="item-title">
-      <a href="{{ newsItem.url }}">{{
+      <a href="#" (click)="onClick(newsItem.url)">{{
         newsItem.title | newsTitle : newsItem.url
       }}</a>
     </div>

@@ -11,7 +11,16 @@
     *ngIf="!newsResponse.loading && !newsResponse.error && newsResponse.data"
   >
     <div *ngFor="let newsItem of newsResponse.data; let i = index">
-      <app-news-item [newsItem]="newsItem" [itemIndex]="i + 1"></app-news-item>
+      <app-news-item
+        [newsItem]="newsItem"
+        [itemIndex]="
+          newsResponse.pageInfo.currentPage * newsResponse.pageInfo.pageSize +
+          (i + 1)
+        "
+      ></app-news-item>
     </div>
+  </div>
+  <div *ngIf="newsResponse.data.length > 0">
+    <button (click)="loadMore()">More</button>
   </div>
 </div>

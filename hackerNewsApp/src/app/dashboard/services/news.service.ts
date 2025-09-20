@@ -1,38 +1,61 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import { INewsItem } from '../interfaces/news-item.interface';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';
 import { NewsSelection } from '../enums/news-selection.enum';
+import { Pagination } from '../models/pagination.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NewsService {
 
-  stories$!: Observable<INewsItem[]>;
   newsSelection$!: Observable<NewsSelection>;
+  pagination$!: Observable<Pagination>;
+  newItemIdsCache$!: Observable<number[]>;
+  private pageInfo = new Pagination(0);
   constructor(private http: HttpClient) {
-    this.newsSelection$ = this.newsSelectionSubject.asObservable();
+    this.setupListeners();
   }
 
   private newsSelectionSubject = new BehaviorSubject<NewsSelection>(NewsSelection.None);
+  private paginationSubject = new BehaviorSubject<Pagination>(this.pageInfo);
 
   getNews(newsSelection: NewsSelection) {
+    this.pageInfo.reset();
+    this.paginationSubject.next(this.pageInfo);
     this.newsSelectionSubject.next(newsSelection);
   }
 
-  getTopStories(): Observable<number[]> {
+  loadMore() {
+    this.pageInfo.currentPage = this.pageInfo.currentPage + 1;
+    this.paginationSubject.next(this.pageInfo);
+  }
+
+  getTopStoriesData(): Observable<number[]> {
     return this.http.get<number[]>(environment.apiUrl + ApiEndPoints.TopStoriesEndPoint);
   }
 
-  getNewStories(): Observable<number[]> {
+  getNewStoriesData(): Observable<number[]> {
     return this.http.get<number[]>(environment.apiUrl + ApiEndPoints.NewStoriesEndPoint);
   }
 
-  getNewsItem(itemId: number): Observable<INewsItem> {
+  getNewsItemData(itemId: number): Observable<INewsItem> {
     var finalEndPoint = ApiEndPoints.NewsItemEndPoint.replace("{0}", itemId.toString());
     return this.http.get<INewsItem>(environment.apiUrl + finalEndPoint);
+  }
+
+  private setupListeners() {
+    this.newsSelection$ = this.newsSelectionSubject.asObservable();
+    this.pagination$ = this.paginationSubject.asObservable();
+
+    this.newItemIdsCache$ = this.newsSelection$.pipe(
+      switchMap((newsSelection: NewsSelection) => {
+        return (newsSelection === NewsSelection.Top)
+          ? this.getTopStoriesData()
+          : this.getNewStoriesData();
+      }),
+      shareReplay(1)
+    )
   }
 }

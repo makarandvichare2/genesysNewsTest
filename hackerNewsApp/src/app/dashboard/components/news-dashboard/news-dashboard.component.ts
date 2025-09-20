@@ -1,64 +1,75 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NewsItemComponent } from '../news-item/news-item.component';
 import { NewsService } from '../../services/news.service';
-import { catchError, EMPTY, filter, forkJoin, Subscription, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, distinctUntilChanged, EMPTY, filter, forkJoin, Subscription, switchMap, tap } from 'rxjs';
 import { INewsItem } from '../../interfaces/news-item.interface';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { CommonModule } from '@angular/common';
 import { NewsResponse } from '../../models/news-response-model';
+import { Pagination } from '../../models/pagination.model';
 
 @Component({
   selector: 'app-news-dashboard',
   imports: [NewsItemComponent, CommonModule],
   templateUrl: './news-dashboard.component.html',
   styleUrl: './news-dashboard.component.scss',
-  providers: [NewsService]
 })
 export class NewsDashBoardComponent implements OnInit, OnDestroy {
 
   newsResponse: NewsResponse = new NewsResponse();
   constructor(private newsService: NewsService) {
-
+    this.setupNewsListener();
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
-    this.loadNews();
-    this.newsService.getNews(NewsSelection.Top);
+    // this.newsService.getNews(NewsSelection.Top);
+  }
+
+  loadMore() {
+    this.newsService.loadMore();
   }
 
   private subscription!: Subscription;
-  private loadNews() {
-    this.subscription = this.newsService.newsSelection$.pipe(
-      filter(newsSelection => newsSelection != NewsSelection.None),
-      tap(() => this.newsResponse.loading = true),
-      switchMap((newsSelection: NewsSelection) => {
-        const newsItemsIds$ = (newsSelection === NewsSelection.Top)
-          ? this.newsService.getTopStories()
-          : this.newsService.getNewStories();
-        return newsItemsIds$.pipe(
-          switchMap((newsItemsIds: number[]) => {
-            if (newsItemsIds.length === 0) {
-              return EMPTY;
-            }
-            newsItemsIds = newsItemsIds.slice(0, 2);
-            const newsDetail$ = newsItemsIds.map(itemId =>
-              this.newsService.getNewsItem(itemId)
-            );
-            return forkJoin(newsDetail$);
-          }));
-      }),
-      catchError(error => {
-        this.newsResponse.error = error;
-        this.newsResponse.loading = false;
-        return EMPTY;
-      })
-    ).subscribe(
-      (newsItems: INewsItem[]) => {
-        this.newsResponse.data = newsItems;
-        this.newsResponse.loading = false;
-        this.newsResponse.error = null;
-      })
+  private setupNewsListener() {
+    this.subscription = combineLatest(
+      [this.newsService.newsSelection$,
+      this.newsService.pagination$])
+      .pipe(
+        filter(([newsSelection, _]) => newsSelection != NewsSelection.None),
+        tap(([_, pageInfo]) => {
+          this.newsResponse.loading = true;
+          this.newsResponse.pageInfo = pageInfo;
+        }),
+        switchMap(([_, pageInfo]) => {
+          return this.combinedNewsInfo(pageInfo);
+        }),
+        catchError(error => {
+          this.newsResponse.error = error;
+          this.newsResponse.loading = false;
+          return EMPTY;
+        })
+      ).subscribe(
+        (newsItems: INewsItem[]) => {
+          this.newsResponse.data = newsItems;
+          this.newsResponse.loading = false;
+          this.newsResponse.error = null;
+        })
+  }
+
+  private combinedNewsInfo(pageInfo: Pagination) {
+    return this.newsService.newItemIdsCache$.pipe(
+      switchMap((newsItemsIds: number[]) => {
+        if (newsItemsIds.length === 0) {
+          return EMPTY;
+        }
+        const pagedNewsItemIds = newsItemsIds.slice(
+          pageInfo.currentPage * pageInfo.pageSize,
+          (pageInfo.currentPage + 1) * pageInfo.pageSize);
+        const newsDetail$ = pagedNewsItemIds.map(itemId => this.newsService.getNewsItemData(itemId)
+        );
+        return forkJoin(newsDetail$);
+      }));
   }
 }

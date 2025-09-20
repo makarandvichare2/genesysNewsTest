@@ -10,8 +10,8 @@
   <div
     *ngIf="!newsResponse.loading && !newsResponse.error && newsResponse.data"
   >
-    <div *ngFor="let newsItem of newsResponse.data">
-      <app-news-item [NewsItem]="newsItem"></app-news-item>
+    <div *ngFor="let newsItem of newsResponse.data; let i = index">
+      <app-news-item [newsItem]="newsItem" [itemIndex]="i + 1"></app-news-item>
     </div>
   </div>
 </div>

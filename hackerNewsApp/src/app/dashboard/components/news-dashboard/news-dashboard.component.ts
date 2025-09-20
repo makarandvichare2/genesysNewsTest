@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NewsItemComponent } from '../news-item/news-item.component';
 import { NewsService } from '../../services/news.service';
-import { catchError, EMPTY, forkJoin, Subscription, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, filter, forkJoin, Subscription, switchMap, tap } from 'rxjs';
 import { INewsItem } from '../../interfaces/news-item.interface';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { CommonModule } from '@angular/common';
@@ -31,6 +31,7 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
   private loadNews() {
     this.subscription = this.newsService.newsSelection$.pipe(
+      filter(newsSelection => newsSelection != NewsSelection.None),
       tap(() => this.newsResponse.loading = true),
       switchMap((newsSelection: NewsSelection) => {
         const newsItemsIds$ = (newsSelection === NewsSelection.Top)
@@ -41,6 +42,7 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
             if (newsItemsIds.length === 0) {
               return EMPTY;
             }
+            newsItemsIds = newsItemsIds.slice(0, 2);
             const newsDetail$ = newsItemsIds.map(itemId =>
               this.newsService.getNewsItem(itemId)
             );

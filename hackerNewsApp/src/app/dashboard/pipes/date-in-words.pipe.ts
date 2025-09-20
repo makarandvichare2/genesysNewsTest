@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import moment from 'moment';
+import { nullableNumber } from '../../common/types/nullable-number.type';
 
 @Pipe({
   name: 'dateInWords'

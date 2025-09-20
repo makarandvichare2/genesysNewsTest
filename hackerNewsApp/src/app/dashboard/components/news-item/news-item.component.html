@@ -1,15 +1,23 @@
-        <div class="news-item">
-            <div class="item-rank">1.</div>
-            <div class="item-content">
-                <div class="item-title">
-                    <a href="#">{{NewsItem.title | newsTitle}}</a>
-                </div>
-                <div class="item-meta">
-                    <span class="meta-score">{{NewsItem.score}} points</span> by <a href="#" class="meta-link">{{NewsItem.by}}</a>
-                    <span class="meta-separator">|</span>
-                    <span class="meta-time">{{NewsItem.time | dateInWords}}</span>
-                    <span class="meta-separator">|</span>
-                    <a href="#" class="meta-link">{{NewsItem.descendants}} comments</a>
-                </div>
-            </div>
+<div class="news-item">
+  <div class="item-rank">{{ itemIndex }}.</div>
+  <div class="item-content">
+    <div class="item-title">
+      <a href="{{ newsItem.url }}">{{
+        newsItem.title | newsTitle : newsItem.url
+      }}</a>
+    </div>
+    <div class="item-meta">
+      <span class="meta-score">{{ newsItem.score }} points</span> by
+      <a href="#" class="meta-link">{{ newsItem.by }}</a>
+      <span class="meta-separator">|</span>
+      <span class="meta-time">{{ newsItem.time | dateInWords }}</span>
+      <span class="meta-separator">|</span>
+      <a href="#" class="meta-link">
+        <div *ngIf="newsItem.descendants > 0">
+          {{ newsItem.descendants }} comments
         </div>
+        <div *ngIf="newsItem.descendants == 0">discuss</div>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,1 @@
-type nullableNumber = number | null | undefined;
+export type nullableNumber = number | null | undefined;

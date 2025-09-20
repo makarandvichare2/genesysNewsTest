@@ -2,14 +2,14 @@
             <div class="item-rank">1.</div>
             <div class="item-content">
                 <div class="item-title">
-                    <a href="#">The Art of Code Simplicity</a>
+                    <a href="#">{{NewsItem.title | newsTitle}}</a>
                 </div>
                 <div class="item-meta">
-                    <span class="meta-score">156 points</span> by <a href="#" class="meta-link">johndoe</a>
+                    <span class="meta-score">{{NewsItem.score}} points</span> by <a href="#" class="meta-link">{{NewsItem.by}}</a>
                     <span class="meta-separator">|</span>
-                    <span class="meta-time">2 hours ago</span>
+                    <span class="meta-time">{{NewsItem.time | dateInWords}}</span>
                     <span class="meta-separator">|</span>
-                    <a href="#" class="meta-link">42 comments</a>
+                    <a href="#" class="meta-link">{{NewsItem.descendants}} comments</a>
                 </div>
             </div>
         </div>

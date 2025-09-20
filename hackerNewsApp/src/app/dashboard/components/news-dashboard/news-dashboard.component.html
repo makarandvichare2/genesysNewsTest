@@ -1,5 +1,17 @@
 <div class="list-container">
-  <div *ngFor="let newsItem of newsItems$ | async">
-    <app-news-item [NewsItem]="newsItem"></app-news-item>
+  <div *ngIf="newsResponse.loading" class="loading-indicator">
+    <p>Loading news...</p>
+  </div>
+
+  <div *ngIf="newsResponse.error" class="error-message">
+    <p>Failed to load news. Please try again later.</p>
+  </div>
+
+  <div
+    *ngIf="!newsResponse.loading && !newsResponse.error && newsResponse.data"
+  >
+    <div *ngFor="let newsItem of newsResponse.data">
+      <app-news-item [NewsItem]="newsItem"></app-news-item>
+    </div>
   </div>
 </div>

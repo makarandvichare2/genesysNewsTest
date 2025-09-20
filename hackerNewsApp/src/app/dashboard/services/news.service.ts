@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { INewsItem } from '../interfaces/news-item.interface';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';
-import { NewsType } from '../enums/news-type.enum';
 import { NewsSelection } from '../enums/news-selection.enum';
 
 @Injectable({
@@ -18,7 +17,7 @@ export class NewsService {
     this.newsSelection$ = this.newsSelectionSubject.asObservable();
   }
 
-  private newsSelectionSubject = new Subject<NewsSelection>();
+  private newsSelectionSubject = new BehaviorSubject<NewsSelection>(NewsSelection.None);
 
   getNews(newsSelection: NewsSelection) {
     this.newsSelectionSubject.next(newsSelection);

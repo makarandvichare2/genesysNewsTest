@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { INewsItem } from '../../interfaces/news-item.interface';
 
 @Component({
   selector: 'app-news-item',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './news-item.component.scss'
 })
 export class NewsItemComponent {
-
+  @Input() NewsItem!: INewsItem;
 }

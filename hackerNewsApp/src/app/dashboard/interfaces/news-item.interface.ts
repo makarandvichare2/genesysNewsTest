@@ -1,3 +1,5 @@
+import { NewsType } from "../enums/news-type.enum";
+
 export interface INewsItem {
   id: number;
   type: NewsType;

@@ -1,4 +1,4 @@
-enum NewsType {
+export enum NewsType {
   Story,
   Job
 }

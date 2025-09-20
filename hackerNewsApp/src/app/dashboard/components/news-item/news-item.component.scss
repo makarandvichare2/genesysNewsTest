@@ -1,0 +1,53 @@
+@use '../../../styles/variables' as *;
+
+.news-item {
+  display: grid;
+  grid-template-columns: 35px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid $light-gray2;
+}
+
+.news-item:last-child {
+  border-bottom: none;
+}
+
+.item-rank {
+  font-size: 0.9em;
+  color: $gray;
+  text-align: right;
+}
+
+.item-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-title {
+  font-size: 1.1em;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.item-title a {
+  color: $black;
+  text-decoration: none;
+}
+
+.item-title a:hover {
+  text-decoration: underline;
+}
+
+.item-meta {
+  font-size: 0.8em;
+  color: $gray;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.meta-link {
+  color: $gray;
+  text-decoration: none;
+}

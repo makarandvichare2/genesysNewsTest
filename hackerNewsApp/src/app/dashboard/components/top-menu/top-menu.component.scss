@@ -1,0 +1,42 @@
+@use '../../../styles/variables' as *;
+
+.top-menu {
+  background-color: $orange;
+  padding: 5px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 25px;
+}
+
+.site-logo {
+  border: 1px solid $white;
+  color: $white;
+  font-weight: bold;
+  padding: 2px 5px;
+  line-height: 1;
+}
+
+.nav-link {
+  color: $black;
+  text-decoration: none;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-link.bold {
+  font-weight: bold;
+}
+
+.nav-divider {
+  color: $black;
+}
+
+.nav-right a {
+  color: $black;
+  text-decoration: none;
+}

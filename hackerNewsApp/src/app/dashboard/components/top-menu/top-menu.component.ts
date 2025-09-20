@@ -8,18 +8,27 @@ import { NewsService } from '../../services/news.service';
   templateUrl: './top-menu.component.html',
   styleUrl: './top-menu.component.scss'
 })
-export class TopMenuComponent implements OnInit {
+export class TopMenuComponent {
   constructor(private newsService: NewsService) {
 
   }
-  ngOnInit(): void {
-    this.newsService.getNews(NewsSelection.Top);
+  activeItem: string = 'Top News';
+
+  private setActiveItem(itemName: string): void {
+    this.activeItem = itemName;
   }
-  getTopNews() {
+
+  getTopNews(itemName: string, event: Event) {
+
+    this.setActiveItem(itemName);
+    event.preventDefault();
     this.newsService.getNews(NewsSelection.Top);
   }
 
-  getLatestNews() {
+  getLatestNews(itemName: string, event: Event) {
+
+    this.setActiveItem(itemName);
+    event.preventDefault();
     this.newsService.getNews(NewsSelection.New);
   }
 }

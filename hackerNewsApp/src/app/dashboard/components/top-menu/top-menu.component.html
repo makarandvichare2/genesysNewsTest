@@ -1,24 +1,29 @@
 <div class="top-menu">
   <div class="nav-left">
     <span class="site-logo">Y</span>
-    <a href="#" class="nav-link bold">Hacker News</a>
+    <a
+      (click)="getTopNews('Hacker News', $event)"
+      [class.active]="activeItem === 'Hacker News'"
+      class="nav-link bold"
+      >Hacker News</a
+    >
     <span class="nav-divider">|</span>
-    <a href="#" class="nav-link" (click)="getTopNews()">Top News</a>
+    <a
+      (click)="getTopNews('Top News', $event)"
+      [class.active]="activeItem === 'Top News'"
+      class="nav-link"
+      >Top News</a
+    >
     <span class="nav-divider">|</span>
-    <a href="#" class="nav-link" (click)="getLatestNews()">Latest News</a>
-    <span class="nav-divider">|</span>
-    <a href="#" class="nav-link">comments</a>
-    <span class="nav-divider">|</span>
-    <a href="#" class="nav-link">ask</a>
-    <span class="nav-divider">|</span>
-    <a href="#" class="nav-link">show</a>
-    <span class="nav-divider">|</span>
-    <a href="#" class="nav-link">jobs</a>
-    <span class="nav-divider">|</span>
-    <a href="#" class="nav-link">submit</a>
+    <a
+      (click)="getLatestNews('Latest News', $event)"
+      [class.active]="activeItem === 'Latest News'"
+      class="nav-link"
+      >Latest News</a
+    >
   </div>
 
   <div class="nav-right">
-    <a href="#">login</a>
+    <a [class.active]="activeItem === 'login'" class="nav-link">login</a>
   </div>
 </div>

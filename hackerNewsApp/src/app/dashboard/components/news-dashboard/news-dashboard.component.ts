@@ -24,7 +24,7 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
-    // this.newsService.getNews(NewsSelection.Top);
+    this.newsService.getNews(NewsSelection.Top);
   }
 
   loadMore() {

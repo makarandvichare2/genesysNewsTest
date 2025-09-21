@@ -15,5 +15,7 @@ export class NewsItemComponent {
   @Input() newsItem!: INewsItem;
   @Input() itemIndex!: number;
 
-  onClick(url: string) { }
+  onClick(url: string) {
+    console.log(url);
+   }
 }

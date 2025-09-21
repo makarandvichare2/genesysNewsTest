@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { NewsService } from '../../services/news.service';
 

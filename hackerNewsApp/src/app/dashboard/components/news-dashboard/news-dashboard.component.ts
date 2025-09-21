@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NewsItemComponent } from '../news-item/news-item.component';
 import { NewsService } from '../../services/news.service';
-import { catchError, combineLatest, distinctUntilChanged, EMPTY, filter, forkJoin, Subscription, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, EMPTY, filter, forkJoin, Subscription, switchMap, tap } from 'rxjs';
 import { INewsItem } from '../../interfaces/news-item.interface';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { CommonModule } from '@angular/common';

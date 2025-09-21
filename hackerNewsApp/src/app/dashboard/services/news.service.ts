@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, shareReplay, switchMap } from 'rxjs';
 import { INewsItem } from '../interfaces/news-item.interface';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';

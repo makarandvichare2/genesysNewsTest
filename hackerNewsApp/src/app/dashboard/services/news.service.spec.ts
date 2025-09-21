@@ -25,36 +25,47 @@ describe('NewsService', () => {
   });
 
   it('should be created', () => {
+    //Assert
     expect(service).toBeTruthy();
   });
 
   it('should get top stories data', () => {
-    const mockIds = [1, 2, 3];
+    //Arrange
+    const newItemIds = [1, 2, 3];
+
+    //Act
     service.getTopStoriesData().subscribe(ids => {
-      expect(ids).toEqual(mockIds);
+      expect(ids).toEqual(newItemIds);
     });
 
     const req = httpTestingController.expectOne(
       environment.apiUrl + ApiEndPoints.TopStoriesEndPoint
     );
+
+    //Assert
     expect(req.request.method).toBe('GET');
-    req.flush(mockIds);
+    req.flush(newItemIds);
   });
 
   it('should get new stories data', () => {
-    const mockIds = [4, 5, 6];
+    //Arrange
+    const newItemIds = [4, 5, 6];
+
+    //Act
     service.getNewStoriesData().subscribe(ids => {
-      expect(ids).toEqual(mockIds);
+      expect(ids).toEqual(newItemIds);
     });
 
+    //Assert
     const req = httpTestingController.expectOne(
       environment.apiUrl + ApiEndPoints.NewStoriesEndPoint
     );
     expect(req.request.method).toBe('GET');
-    req.flush(mockIds);
+    req.flush(newItemIds);
   });
 
   it('should get a news item by ID', () => {
+    //Arrange
     const itemId = 123;
     const mockNewsItem: INewsItem = {
       id: itemId,
@@ -67,20 +78,27 @@ describe('NewsService', () => {
       type: NewsType.Story,
     };
 
+    //Act
     service.getNewsItemData(itemId).subscribe(newsItem => {
       expect(newsItem).toEqual(mockNewsItem);
     });
 
     const expectedUrl = `${environment.apiUrl}${ApiEndPoints.NewsItemEndPoint.replace('{0}', itemId.toString())}`;
+
+    //Assert
     const req = httpTestingController.expectOne(expectedUrl);
     expect(req.request.method).toBe('GET');
     req.flush(mockNewsItem);
   });
 
   it('should update news selection and reset pagination when getNews is called', () => {
+    //Arrange
     const newSelection = NewsSelection.New;
+
+    //Act
     service.getNews(newSelection);
 
+    //Assert
     service.newsSelection$.subscribe(selection => {
       expect(selection).toBe(newSelection);
     });
@@ -91,9 +109,11 @@ describe('NewsService', () => {
   });
 
   it('should increment current page when loadMore is called', () => {
+    //Act
     // Initial call to set up the pagination subject
     service.getNews(NewsSelection.Top);
 
+    //Act and Assert
     // First call to loadMore
     service.loadMore();
     service.pagination$.subscribe(pagination => {
@@ -107,30 +127,65 @@ describe('NewsService', () => {
     });
   });
 
-  it('should switch between top and new stories on news selection change', (done) => {
-    const topStoriesIds = [1, 2, 3];
-    const newStoriesIds = [4, 5, 6];
-
-    // Simulate selecting Top News
-    service.getNews(NewsSelection.Top);
-
-    // Expect the HTTP request for top stories
-    let req = httpTestingController.expectOne(environment.apiUrl + ApiEndPoints.TopStoriesEndPoint);
-    req.flush(topStoriesIds);
+  it('should get top news when selection changed to top', (done) => {
+    //Arrange
+    const newItemIds = [1, 2, 3];
 
     service.newItemIdsCache$.subscribe(ids => {
-      expect(ids).toEqual(topStoriesIds);
-      // Simulate selecting New News
-      service.getNews(NewsSelection.New);
-
-      // Expect the HTTP request for new stories
-      req = httpTestingController.expectOne(environment.apiUrl + ApiEndPoints.NewStoriesEndPoint);
-      req.flush(newStoriesIds);
-
-      service.newItemIdsCache$.subscribe(newIds => {
-        expect(newIds).toEqual(newStoriesIds);
-        done();
-      });
+      expect(ids).toEqual(newItemIds);
+      done();
     });
+
+    //Act
+    service.getNews(NewsSelection.Top);
+
+    // Assert
+    let req = httpTestingController.expectOne(environment.apiUrl + ApiEndPoints.TopStoriesEndPoint);
+    req.flush(newItemIds);
+  });
+
+  it('should get new news when selection changed to new', (done) => {
+    //Arrange
+    const newItemIds = [1, 2, 3];
+
+    service.newItemIdsCache$.subscribe(ids => {
+      expect(ids).toEqual(newItemIds);
+      done();
+    });
+
+    //Act
+    service.getNews(NewsSelection.New);
+
+    // Assert
+    let req = httpTestingController.expectOne(environment.apiUrl + ApiEndPoints.NewStoriesEndPoint);
+    req.flush(newItemIds);
+  });
+
+  it('should switch between top and new stories on news selection change', (done) => {
+
+    //Arrange
+    //Selecting Top news selection
+    const topNewsIds = [1, 2, 3];
+    const newNewsIds = [4, 5, 6];
+    service.newItemIdsCache$.subscribe(ids => {
+      expect(ids).toEqual(topNewsIds);
+    });
+
+    service.getNews(NewsSelection.Top);
+
+    let req = httpTestingController.expectOne(environment.apiUrl + ApiEndPoints.TopStoriesEndPoint);
+    req.flush(topNewsIds);
+
+    service.newItemIdsCache$.subscribe(ids => {
+      expect(ids).toEqual(newNewsIds);
+      done();
+    });
+
+    //Act
+    service.getNews(NewsSelection.New);
+
+    // Assert
+    req = httpTestingController.expectOne(environment.apiUrl + ApiEndPoints.NewStoriesEndPoint);
+    req.flush(newNewsIds);
   });
 });

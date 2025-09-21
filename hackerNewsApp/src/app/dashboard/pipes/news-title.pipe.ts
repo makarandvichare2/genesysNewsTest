@@ -22,7 +22,6 @@ export class NewsTitlePipe implements PipeTransform {
       domainUrl = fullUrl;
     }
 
-    return domainUrl.length > 0 ? value.concat(" (", domainUrl, ")") : value;
+    return domainUrl.length > 8 ? value.concat(" (", domainUrl, ")") : value;
   }
-
 }

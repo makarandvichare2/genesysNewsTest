@@ -16,4 +16,5 @@ module.exports = {
   },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   testEnvironment: 'jsdom',
+  collectCoverage:true
 };

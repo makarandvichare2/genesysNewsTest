@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import { INewsItem } from '../interfaces/news-item.interface';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';
@@ -51,9 +51,15 @@ export class NewsService {
 
     this.newItemIdsCache$ = this.newsSelection$.pipe(
       switchMap((newsSelection: NewsSelection) => {
-        return (newsSelection === NewsSelection.Top)
-          ? this.getTopStoriesData()
-          : this.getNewStoriesData();
+        if (newsSelection === NewsSelection.Top) {
+          return this.getTopStoriesData();
+        }
+        else if (newsSelection === NewsSelection.New) {
+          return this.getNewStoriesData();
+        }
+        else {
+          return EMPTY;
+        }
       }),
       shareReplay(1)
     )

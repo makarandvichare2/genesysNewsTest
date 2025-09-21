@@ -12,7 +12,8 @@
     "cy:run": "cypress run",
     "e2e": "start-server-and-test start http://localhost:4200 cy:open",
     "storybook": "ng run hackerNewsApp:storybook",
-    "build-storybook": "ng run hackerNewsApp:build-storybook"
+    "build-storybook": "ng run hackerNewsApp:build-storybook",
+    "test:coverage": "jest --coverage"
   },
   "private": true,
   "dependencies": {

@@ -1,30 +1,35 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { NewsService } from './dashboard/services/news.service';
+import { TopMenuComponent } from './dashboard/components/top-menu/top-menu.component';
+import { RouterOutlet } from '@angular/router';
+import { By } from '@angular/platform-browser';
 
+jest.mock('./dashboard/services/news.service');
 describe('AppComponent', () => {
+  let fixture: ComponentFixture<AppComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, NewsService],
+      imports: [TopMenuComponent, RouterOutlet],
+      providers: [NewsService]
     }).compileComponents();
+    fixture = TestBed.createComponent(AppComponent);
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    //Act
     const app = fixture.componentInstance;
+
+    //Assert
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'hackerNewsApp' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('hackerNewsApp');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it('should have top menu', () => {
+    //Act
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, hackerNewsApp');
+    const topMenuComponent = fixture.debugElement.query(By.directive(TopMenuComponent));
+
+    //Assert
+    expect(topMenuComponent).toBeTruthy();
   });
 });

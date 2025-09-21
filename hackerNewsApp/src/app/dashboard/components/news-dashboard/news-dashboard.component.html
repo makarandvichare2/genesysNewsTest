@@ -1,9 +1,9 @@
 <div class="list-container">
   <div *ngIf="newsResponse.loading" class="loading-indicator">
-    <p>Loading news...</p>
+    <p data-cy="loading-message">Loading news...</p>
   </div>
 
-  <div *ngIf="newsResponse.error" class="error-message">
+  <div data-cy="error-message" *ngIf="newsResponse.error" class="error-message">
     <p>Failed to load news. Please try again later.</p>
   </div>
 
@@ -12,6 +12,7 @@
   >
     <div *ngFor="let newsItem of newsResponse.data; let i = index">
       <app-news-item
+        data-cy="news-item"
         [newsItem]="newsItem"
         [itemIndex]="
           newsResponse.pageInfo.currentPage * newsResponse.pageInfo.pageSize +
@@ -21,6 +22,6 @@
     </div>
   </div>
   <div *ngIf="newsResponse.data.length > 0">
-    <button (click)="loadMore()">More</button>
+    <button data-cy="load-more-button" (click)="loadMore()">More</button>
   </div>
 </div>

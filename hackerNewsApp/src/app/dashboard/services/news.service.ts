@@ -7,7 +7,9 @@ import { ApiEndPoints } from '../constants/api-endpoints.const';
 import { NewsSelection } from '../enums/news-selection.enum';
 import { Pagination } from '../models/pagination.model';
 
-@Injectable()
+@Injectable({
+  providedIn:'root'
+})
 export class NewsService {
 
   newsSelection$!: Observable<NewsSelection>;

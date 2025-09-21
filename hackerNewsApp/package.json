@@ -13,7 +13,8 @@
     "e2e": "start-server-and-test start http://localhost:4200 cy:open",
     "storybook": "ng run hackerNewsApp:storybook",
     "build-storybook": "ng run hackerNewsApp:build-storybook",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -39,11 +40,14 @@
     "@storybook/angular": "^9.1.7",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^30.0.0",
+    "angular-eslint": "20.3.0",
     "cypress": "^14.5.4",
+    "eslint": "^9.35.0",
     "jest": "^29.7.0",
     "jest-preset-angular": "^14.6.1",
     "start-server-and-test": "^2.1.2",
     "storybook": "^9.1.7",
-    "typescript": "~5.6.2"
+    "typescript": "~5.6.2",
+    "typescript-eslint": "8.40.0"
   }
 }

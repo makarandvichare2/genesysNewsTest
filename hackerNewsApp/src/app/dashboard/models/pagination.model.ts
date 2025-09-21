@@ -1,5 +1,5 @@
 export class Pagination {
-  constructor(public pageSize: number = 10, public currentPage: number = 0) {
+  constructor(public pageSize = 10, public currentPage = 0) {
   }
 
   reset() {

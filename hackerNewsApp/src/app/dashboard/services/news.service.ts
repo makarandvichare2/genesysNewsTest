@@ -41,7 +41,7 @@ export class NewsService {
   }
 
   getNewsItemData(itemId: number): Observable<INewsItem> {
-    var finalEndPoint = ApiEndPoints.NewsItemEndPoint.replace("{0}", itemId.toString());
+    const finalEndPoint = ApiEndPoints.NewsItemEndPoint.replace("{0}", itemId.toString());
     return this.http.get<INewsItem>(environment.apiUrl + finalEndPoint);
   }
 

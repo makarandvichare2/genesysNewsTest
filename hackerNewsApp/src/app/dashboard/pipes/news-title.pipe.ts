@@ -13,7 +13,7 @@ export class NewsTitlePipe implements PipeTransform {
 
     // const urlObject = new URL(args.join(" "));
     // return value.concat(" (", urlObject.hostname, ")");
-    let fullUrl = args.join(" ");
+    const fullUrl = args.join(" ");
     let domainUrl = '';
     if (fullUrl.length > 0 && fullUrl.indexOf("/", 8) >= 0) {
       domainUrl = fullUrl.substring(0, fullUrl.indexOf("/", 8));

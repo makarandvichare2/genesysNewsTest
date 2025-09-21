@@ -12,7 +12,7 @@ export class TopMenuComponent {
   constructor(private newsService: NewsService) {
 
   }
-  activeItem: string = 'Top News';
+  activeItem = 'Top News';
 
   private setActiveItem(itemName: string): void {
     this.activeItem = itemName;

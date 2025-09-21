@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NewsItemComponent } from './news-item.component';
 import { DateInWordsPipe } from '../../pipes/date-in-words.pipe';
 import { NewsTitlePipe } from '../../pipes/news-title.pipe';
-import { By } from '@angular/platform-browser';
 import { INewsItem } from '../../interfaces/news-item.interface';
 import { NewsType } from '../../enums/news-type.enum';
 

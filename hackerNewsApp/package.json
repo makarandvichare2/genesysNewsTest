@@ -38,6 +38,8 @@
     "@storybook/addon-docs": "^9.1.7",
     "@storybook/addon-onboarding": "^9.1.7",
     "@storybook/angular": "^9.1.7",
+    "@storybook/jest": "^0.2.2",
+    "@storybook/testing-library": "^0.2.1",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^30.0.0",
     "angular-eslint": "20.3.0",

@@ -57,7 +57,7 @@ describe('News Dashboard E2E Tests', () => {
 
     cy.wait('@getNewsItem');
 
-    cy.get('[data-cy="news-item"]').should('have.length', 5);
+    cy.get('[data-cy="news-item"]').should('have.length', 15);
   });
 
   it('should display an error message if the API fails', () => {

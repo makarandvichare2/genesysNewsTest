@@ -95,6 +95,8 @@ describe('NewsDashBoardComponent', () => {
     paginationSubject.next(pageInfo);
     fixture.detectChanges();
     tick();
-    expect(component.newsResponse.data[0]).toEqual(item2);
+    expect(component.newsResponse.data.length).toBe(4);
+    expect(component.newsResponse.data[0]).toEqual(item1);
+    expect(component.newsResponse.data[2]).toEqual(item2);
   }));
 });

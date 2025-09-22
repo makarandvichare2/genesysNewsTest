@@ -2,11 +2,15 @@
 
 .list-container {
   max-width: 100%;
+  min-height: 901.319px;
   margin: 0;
   background-color: $white;
   border: 1px solid $light-gray;
-  padding: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: $lightcyan;
 }
+
 .error-message{
   color: $red;
 }
@@ -19,6 +23,7 @@
 
 .more-link-section {
   text-align: center;
+  margin-top: 25px;
   .more-button {
     display: inline-block;
     margin: 10px 0;

@@ -7,7 +7,7 @@
     <p>Failed to load news. Please try again later.</p>
   </div>
 
-  <div *ngIf="newsResponse.data.length >0">
+  <div *ngIf="newsResponse.data.length > 0">
     <div *ngFor="let newsItem of newsResponse.data; let i = index">
       <app-news-item
         data-cy="news-item"
@@ -16,7 +16,9 @@
       ></app-news-item>
     </div>
   </div>
-  <div *ngIf="newsResponse.data.length > 0">
-    <button data-cy="load-more-button" (click)="loadMore()">More</button>
+  <div class="more-link-section" *ngIf="newsResponse.data.length > 0">
+    <button class="more-button" data-cy="load-more-button" (click)="loadMore()">
+      Load More
+    </button>
   </div>
 </div>

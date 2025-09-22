@@ -56,7 +56,7 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
       ).subscribe(
         (newsItems: INewsItem[]) => {
           this.newsResponse.data.push(...newsItems);
-          this.newsResponse.loading = true;
+          this.newsResponse.loading = false;
           this.newsResponse.error = null;
         })
   }

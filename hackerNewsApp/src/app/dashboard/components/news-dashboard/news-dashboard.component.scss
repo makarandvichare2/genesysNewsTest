@@ -3,10 +3,38 @@
 .list-container {
   max-width: 100%;
   margin: 0;
-   background-color: $white;
-  border: 1px solid $light-gray1;
+  background-color: $white;
+  border: 1px solid $light-gray;
   padding: 15px;
 }
 .error-message{
-   color: floralwhite;
+  color: $red;
 }
+
+.loading-indicator{
+  text-align: center;
+  font-weight: bold;
+  color: $black;
+}
+
+.more-link-section {
+  text-align: center;
+  .more-button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 8px 16px;
+    background-color: $black;
+    color: $white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: $cyan;
+    }
+  }
+}
+

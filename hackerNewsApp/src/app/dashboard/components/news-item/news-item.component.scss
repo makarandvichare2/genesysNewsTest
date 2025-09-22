@@ -5,7 +5,7 @@
   grid-template-columns: 35px 1fr;
   gap: 10px;
   padding: 8px 0;
-  border-bottom: 1px solid $light-gray2;
+  border-bottom: 1px solid $light-gray;
 }
 
 .news-item:last-child {
@@ -14,7 +14,7 @@
 
 .item-rank {
   font-size: 0.9em;
-   color: $gray;
+  color: $gray;
   text-align: right;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .item-title a {
-   color: $black;
+  color: $black;
   text-decoration: none;
 }
 
@@ -41,13 +41,13 @@
 
 .item-meta {
   font-size: 0.8em;
-   color: $gray;
+  color: $gray;
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
 }
 
 .meta-link {
-   color: $gray;
+  color: $gray;
   text-decoration: none;
 }

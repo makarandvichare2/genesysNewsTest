@@ -1,6 +1,7 @@
 <div class="list-container">
   <div *ngIf="newsResponse.loading" class="loading-indicator">
     <p data-cy="loading-message">Loading news...</p>
+    <fa-icon [icon]="faSpinner" class="spinner" />
   </div>
 
   <div data-cy="error-message" *ngIf="newsResponse.error" class="error-message">

@@ -7,15 +7,16 @@ import { NewsSelection } from '../../enums/news-selection.enum';
 import { CommonModule } from '@angular/common';
 import { NewsResponse } from '../../models/news-response-model';
 import { Pagination } from '../../models/pagination.model';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-news-dashboard',
-  imports: [NewsItemComponent, CommonModule],
+  imports: [NewsItemComponent, CommonModule, FontAwesomeModule],
   templateUrl: './news-dashboard.component.html',
   styleUrl: './news-dashboard.component.scss',
 })
 export class NewsDashBoardComponent implements OnInit, OnDestroy {
-
+  faSpinner = faSpinner;
   newsResponse: NewsResponse = new NewsResponse();
   constructor(private newsService: NewsService) {
     this.setupNewsListener();

@@ -15,10 +15,15 @@
   color: $red;
 }
 
+.spinner{
+  font-size: 150px;
+}
+
 .loading-indicator{
   text-align: center;
   font-weight: bold;
   color: $black;
+  margin-top: 20%;
 }
 
 .more-link-section {

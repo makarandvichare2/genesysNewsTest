@@ -41,6 +41,9 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
         tap(([_, pageInfo]) => {
           this.newsResponse.loading = true;
           this.newsResponse.pageInfo = pageInfo;
+          if (this.newsResponse.pageInfo.currentPage == 0) {
+            this.newsResponse.data = [];
+          }
         }),
         switchMap(([_, pageInfo]) => {
           return this.combinedNewsInfo(pageInfo);
@@ -52,8 +55,8 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
         })
       ).subscribe(
         (newsItems: INewsItem[]) => {
-          this.newsResponse.data = newsItems;
-          this.newsResponse.loading = false;
+          this.newsResponse.data.push(...newsItems);
+          this.newsResponse.loading = true;
           this.newsResponse.error = null;
         })
   }

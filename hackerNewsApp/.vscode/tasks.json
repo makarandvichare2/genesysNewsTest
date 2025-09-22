@@ -9,7 +9,7 @@
       "problemMatcher": {
         "owner": "typescript",
         "pattern": "$tsc",
-        "$background": {
+        "background": {
           "activeOnStart": true,
           "beginsPattern": {
             "regexp": "(.*?)"
@@ -27,7 +27,7 @@
       "problemMatcher": {
         "owner": "typescript",
         "pattern": "$tsc",
-        "$background": {
+        "background": {
           "activeOnStart": true,
           "beginsPattern": {
             "regexp": "(.*?)"

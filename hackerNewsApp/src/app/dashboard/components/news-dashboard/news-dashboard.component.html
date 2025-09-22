@@ -7,17 +7,12 @@
     <p>Failed to load news. Please try again later.</p>
   </div>
 
-  <div
-    *ngIf="!newsResponse.loading && !newsResponse.error && newsResponse.data"
-  >
+  <div *ngIf="newsResponse.data.length >0">
     <div *ngFor="let newsItem of newsResponse.data; let i = index">
       <app-news-item
         data-cy="news-item"
         [newsItem]="newsItem"
-        [itemIndex]="
-          newsResponse.pageInfo.currentPage * newsResponse.pageInfo.pageSize +
-          (i + 1)
-        "
+        [itemIndex]="i + 1"
       ></app-news-item>
     </div>
   </div>

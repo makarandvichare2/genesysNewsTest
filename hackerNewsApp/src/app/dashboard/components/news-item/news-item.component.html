@@ -1,4 +1,4 @@
-<div class="news-item">
+<div class="news-item" [ngClass]="isStoryType ? 'story-type' : 'job-type'">
   <div class="item-rank">{{ itemIndex }}.</div>
   <div class="item-content">
     <div class="item-title">
@@ -8,7 +8,9 @@
     </div>
     <div class="item-meta">
       <span class="meta-score">{{ newsItem.score }} points</span> by
-      <a href="#" class="meta-link">{{ newsItem.by }}</a>
+      <a href="#" class="meta-link">
+        {{ newsItem.type }} by {{ newsItem.by }}</a
+      >
       <span class="meta-separator">|</span>
       <span class="meta-time">{{ newsItem.time | dateInWords }}</span>
       <span class="meta-separator">|</span>

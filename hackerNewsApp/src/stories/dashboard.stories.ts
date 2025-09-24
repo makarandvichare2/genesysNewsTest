@@ -1,7 +1,6 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular';
-import { of, BehaviorSubject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { within, userEvent } from '@storybook/testing-library';
+import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { of, BehaviorSubject, delay, throwError, Observable, EMPTY } from 'rxjs';
+import { waitFor, within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { NewsDashBoardComponent } from '../app/dashboard/components/news-dashboard/news-dashboard.component';
 import { NewsSelection } from '../app/dashboard/enums/news-selection.enum';
@@ -9,6 +8,8 @@ import { INewsItem } from '../app/dashboard/interfaces/news-item.interface';
 import { Pagination } from '../app/dashboard/models/pagination.model';
 import { NewsService } from '../app/dashboard/services/news.service';
 import { NewsType } from '../app/dashboard/enums/news-type.enum';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const mockNewsItems: INewsItem[] = [
   { id: 1, title: 'Item 1', url: 'https://example.com/1', by: 'user1', time: 12334234, score: 10, descendants: 5, type: NewsType.Story },
@@ -27,60 +28,144 @@ const mockNewsItems: INewsItem[] = [
   { id: 14, title: 'Item 15', url: 'https://example.com/15', by: 'user1', time: 12334234, score: 200, descendants: 34, type: NewsType.Story },
 ];
 
-const mockNewsItemsMap = new Map(mockNewsItems.map(item => [item.id, item]));
+const mockNewsIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
-const mockNewsIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15];
+class SuccessNewsServiceMock {
+  newsSelection$ = new BehaviorSubject<NewsSelection>(NewsSelection.Top);
+  pagination$ = new BehaviorSubject<Pagination>(new Pagination(10, 0));
+  newItemIdsCache$ = new BehaviorSubject<number[]>(mockNewsIds);
 
-const paginationSubject = new BehaviorSubject(new Pagination());
-const newsSelectionSubject = new BehaviorSubject(NewsSelection.None);
+  getNews(selection: NewsSelection) {
+    this.newsSelection$.next(selection);
+  }
 
-const newsService = {
-  newsSelection$: newsSelectionSubject.asObservable(),
-  pagination$: paginationSubject.asObservable(),
-  newItemIdsCache$: of(mockNewsIds),
-  getNewsItemData: (id: number) => of(mockNewsItemsMap.get(id)),
-  getNews: (selection: NewsSelection) => {
-    newsSelectionSubject.next(selection);
-    paginationSubject.next(new Pagination());
-  },
-  loadMore: () => {
-    const currentPagination = paginationSubject.getValue();
-    const newPage = currentPagination.currentPage + 1;
-    if (newPage * currentPagination.pageSize < mockNewsIds.length) {
-      paginationSubject.next(new Pagination(newPage * currentPagination.pageSize, newPage));
-    } else {
-      console.log('No more items to load in mock.');
+  loadMore() {
+    this.pagination$.next(new Pagination(10, 1));
+  }
+
+  getNewsItemData(itemId: number): Observable<INewsItem> {
+    const newsItem = mockNewsItems.find(item => item.id === itemId);
+    if (newsItem) {
+      return of(newsItem).pipe(delay(2000));
     }
-  },
+    return EMPTY;
+  }
+}
+
+class LoadingNewsServiceMock {
+  newsSelection$ = new BehaviorSubject<NewsSelection>(NewsSelection.Top);
+  pagination$ = new BehaviorSubject<Pagination>(new Pagination(10, 0));
+  newItemIdsCache$ = new BehaviorSubject<number[]>([]);
+
+  getNews(selection: NewsSelection) {
+    this.newsSelection$.next(selection);
+  }
+
+  loadMore() {
+    this.pagination$.next(new Pagination(10, 1));
+  }
+
+  getNewsItemData(itemId: number): Observable<INewsItem> {
+    return of();
+  }
+}
+
+class ErrorNewsServiceMock {
+  newsSelection$ = new BehaviorSubject<NewsSelection>(NewsSelection.Top);
+  pagination$ = new BehaviorSubject<Pagination>(new Pagination(10, 0));
+  newItemIdsCache$ = new BehaviorSubject<number[]>(mockNewsIds);
+
+  getNews(selection: NewsSelection) {
+    this.newsSelection$.next(selection);
+  }
+
+  loadMore() {
+    this.pagination$.next(new Pagination(10, 1));
+  }
+
+  getNewsItemData(itemId: number): Observable<INewsItem> {
+    return throwError(() => 'Something went wrong!');
+  }
+}
+
+type NewsDashboardStory = StoryObj<NewsDashBoardComponent> & {
+  args: {
+    responseType?: 'success' | 'loading' | 'error';
+    [key: string]: unknown;
+  };
 };
 
 const meta: Meta<NewsDashBoardComponent> = {
-  title: 'Dashboard/NewsDashBoardComponent',
+  title: 'News Dashboard',
   component: NewsDashBoardComponent,
   decorators: [
-    applicationConfig({
-      providers: [
-        { provide: NewsService, useValue: newsService },
-        { provide: HttpClient, useValue: {} }
-      ]
-    })
-  ]
+    moduleMetadata({
+      declarations: [],
+      imports: [CommonModule, FontAwesomeModule],
+    }),
+  ],
 };
+
 export default meta;
 
-type Story = StoryObj<NewsDashBoardComponent>;
-
-export const LoadingState: Story = {
-  play: async ({ canvasElement, args }) => {
+export const Loading: NewsDashboardStory = {
+  decorators: [
+    moduleMetadata({
+      providers: [
+        { provide: NewsService, useClass: LoadingNewsServiceMock },
+      ],
+    }),
+  ],
+  args: {
+    responseType: 'loading',
+  },
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
-    const loadingMessage = canvas.getByText('Loading news...');
-    await expect(loadingMessage).toBeVisible();
-
-    const firstItem = await canvas.findByText(mockNewsItems[0].title);
-    await expect(firstItem).toBeVisible();
-
-    await expect(loadingMessage).not.toBeInTheDocument();
+    await waitFor(() => {
+      const loadingIndicator = canvas.getByTestId('loading-message');
+      expect(loadingIndicator).toBeInTheDocument();
+    });
   },
 };
 
+export const Success: NewsDashboardStory = {
+  decorators: [
+    moduleMetadata({
+      providers: [
+        { provide: NewsService, useClass: SuccessNewsServiceMock },
+      ],
+    }),
+  ],
+  args: {
+    responseType: 'success',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => {
+      const newItemsEls = canvas.getAllByTestId('news-item');
+      expect(newItemsEls.length).toBe(10);
+      const firstNewsItem = canvas.getAllByText(/Item 1/i)[0];
+      expect(firstNewsItem).toBeInTheDocument();
+    }, { timeout: 3000 });
+  },
+};
+
+export const Error: NewsDashboardStory = {
+  decorators: [
+    moduleMetadata({
+      providers: [
+        { provide: NewsService, useClass: ErrorNewsServiceMock },
+      ],
+    }),
+  ],
+  args: {
+    responseType: 'error',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => {
+      const errorMessage = canvas.getByTestId('error-message');
+      expect(errorMessage).toBeInTheDocument();
+    });
+  },
+};

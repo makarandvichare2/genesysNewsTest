@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { INewsItem } from '../../interfaces/news-item.interface';
+import { IApiNewsItem } from '../../interfaces/news-item.interface';
 import { DateInWordsPipe } from '../../pipes/date-in-words.pipe';
 import { NewsTitlePipe } from '../../pipes/news-title.pipe';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { NewsType } from '../../enums/news-type.enum';
 })
 export class NewsItemComponent {
 
-  @Input() newsItem!: INewsItem;
+  @Input() newsItem!: IApiNewsItem;
   @Input() itemIndex!: number;
 
   get isStoryType() {

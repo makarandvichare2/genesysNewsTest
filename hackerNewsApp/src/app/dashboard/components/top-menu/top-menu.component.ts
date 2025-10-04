@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { NewsService } from '../../services/news.service';
-import { DownloadService } from '../../../web-worker-feature/services/download.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-menu',

@@ -1,6 +1,6 @@
 import { NewsType } from "../enums/news-type.enum";
 
-export interface INewsItem {
+export interface IApiNewsItem {
   id: number;
   type: NewsType;
   by: string;
@@ -9,4 +9,6 @@ export interface INewsItem {
   url: string;
   score: number;
   descendants: number;
+  kids: number;
 }
+

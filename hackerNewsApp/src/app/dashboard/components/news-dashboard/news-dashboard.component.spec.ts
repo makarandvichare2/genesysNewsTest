@@ -6,7 +6,7 @@ import { NewsService } from '../../services/news.service';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { BehaviorSubject, of } from 'rxjs';
 import { Pagination } from '../../models/pagination.model';
-import { INewsItem } from '../../interfaces/news-item.interface';
+import { IApiNewsItem } from '../../interfaces/news-item.interface';
 jest.mock('../../services/news.service');
 
 describe('NewsDashBoardComponent', () => {
@@ -62,13 +62,13 @@ describe('NewsDashBoardComponent', () => {
   it('should return different news data on page change ', fakeAsync(() => {
     //Arrange
     const itemIds = [1, 2, 3, 4, 5, 6];
-    const item1: INewsItem = {
+    const item1: IApiNewsItem = {
       id: 1, title: 'Mocked News', url: 'http://mock.com',
-      by: 'user1', time: 1234567890, score: 10, descendants: 5, type: NewsType.Story
+      by: 'user1', time: 1234567890, score: 10, descendants: 5, type: NewsType.Story, kids:1
     };
-    const item2: INewsItem = {
+    const item2: IApiNewsItem = {
       id: 2, title: 'Another Mocked News', url: 'http://another.com',
-      by: 'user1', time: 1234567891, score: 4, descendants: 0, type: NewsType.Story
+      by: 'user1', time: 1234567891, score: 4, descendants: 0, type: NewsType.Story, kids: 1
     };
     const pageInfo = new Pagination(2, 0)
     const newsSelectionSubject = new BehaviorSubject(NewsSelection.None);

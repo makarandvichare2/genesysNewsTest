@@ -4,7 +4,7 @@ import { NewsService } from './news.service';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';
 import { NewsSelection } from '../enums/news-selection.enum';
-import { INewsItem } from '../interfaces/news-item.interface';
+import { IApiNewsItem } from '../interfaces/news-item.interface';
 import { NewsType } from '../enums/news-type.enum';
 
 describe('NewsService', () => {
@@ -67,7 +67,7 @@ describe('NewsService', () => {
   it('should get a news item by ID', () => {
     //Arrange
     const itemId = 123;
-    const mockNewsItem: INewsItem = {
+    const mockNewsItem: IApiNewsItem = {
       id: itemId,
       title: 'Test News Item',
       by: 'testuser',

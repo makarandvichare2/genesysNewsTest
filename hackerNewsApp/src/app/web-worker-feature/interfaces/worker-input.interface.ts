@@ -1,7 +1,7 @@
-import { INewsItem } from "../../dashboard/interfaces/news-item.interface";
+import { IApiNewsItem } from "../../dashboard/interfaces/news-item.interface";
+import { DownloadNewsItemType } from "../type/custom.types";
 
 export interface IWorkerInput {
-  csvData: INewsItem[];
+  csvData: IApiNewsItem[];
   headers: string[];
-  fileName: string;
 }

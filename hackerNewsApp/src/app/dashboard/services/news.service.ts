@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, forkJoin, Observable, shareReplay, switchMap } from 'rxjs';
-import { INewsItem } from '../interfaces/news-item.interface';
+import { IApiNewsItem } from '../interfaces/news-item.interface';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';
 import { NewsSelection } from '../enums/news-selection.enum';
@@ -42,9 +42,9 @@ export class NewsService {
     return this.http.get<number[]>(environment.apiUrl + ApiEndPoints.NewStoriesEndPoint);
   }
 
-  getNewsItemData(itemId: number): Observable<INewsItem> {
+  getNewsItemData(itemId: number): Observable<IApiNewsItem> {
     const finalEndPoint = ApiEndPoints.NewsItemEndPoint.replace("{0}", itemId.toString());
-    return this.http.get<INewsItem>(environment.apiUrl + finalEndPoint);
+    return this.http.get<IApiNewsItem>(environment.apiUrl + finalEndPoint);
   }
 
   private setupListeners() {

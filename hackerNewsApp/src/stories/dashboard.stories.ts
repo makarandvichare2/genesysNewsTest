@@ -4,14 +4,14 @@ import { waitFor, within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { NewsDashBoardComponent } from '../app/dashboard/components/news-dashboard/news-dashboard.component';
 import { NewsSelection } from '../app/dashboard/enums/news-selection.enum';
-import { INewsItem } from '../app/dashboard/interfaces/news-item.interface';
+import { IApiNewsItem } from '../app/dashboard/interfaces/news-item.interface';
 import { Pagination } from '../app/dashboard/models/pagination.model';
 import { NewsService } from '../app/dashboard/services/news.service';
 import { NewsType } from '../app/dashboard/enums/news-type.enum';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-const mockNewsItems: INewsItem[] = [
+const mockNewsItems: IApiNewsItem[] = [
   { id: 1, title: 'Item 1', url: 'https://example.com/1', by: 'user1', time: 12334234, score: 10, descendants: 5, type: NewsType.Story },
   { id: 2, title: 'Item 2', url: 'https://example.com/2', by: 'user2', time: 12334234, score: 20, descendants: 8, type: NewsType.Story },
   { id: 3, title: 'Item 3', url: 'https://example.com/3', by: 'user3', time: 12334234, score: 15, descendants: 3, type: NewsType.Story },
@@ -43,7 +43,7 @@ class SuccessNewsServiceMock {
     this.pagination$.next(new Pagination(10, 1));
   }
 
-  getNewsItemData(itemId: number): Observable<INewsItem> {
+  getNewsItemData(itemId: number): Observable<IApiNewsItem> {
     const newsItem = mockNewsItems.find(item => item.id === itemId);
     if (newsItem) {
       return of(newsItem).pipe(delay(2000));
@@ -65,7 +65,7 @@ class LoadingNewsServiceMock {
     this.pagination$.next(new Pagination(10, 1));
   }
 
-  getNewsItemData(itemId: number): Observable<INewsItem> {
+  getNewsItemData(itemId: number): Observable<IApiNewsItem> {
     return of();
   }
 }
@@ -83,7 +83,7 @@ class ErrorNewsServiceMock {
     this.pagination$.next(new Pagination(10, 1));
   }
 
-  getNewsItemData(itemId: number): Observable<INewsItem> {
+  getNewsItemData(itemId: number): Observable<IApiNewsItem> {
     return throwError(() => 'Something went wrong!');
   }
 }

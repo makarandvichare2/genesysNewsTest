@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NewsSelection } from '../../enums/news-selection.enum';
 import { NewsService } from '../../services/news.service';
+import { DownloadService } from '../../../web-worker-feature/services/download.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-menu',
@@ -9,7 +11,7 @@ import { NewsService } from '../../services/news.service';
   styleUrl: './top-menu.component.scss'
 })
 export class TopMenuComponent {
-  constructor(private newsService: NewsService) {
+  constructor(private newsService: NewsService, private router: Router) {
 
   }
   activeItem = 'Top News';
@@ -22,6 +24,7 @@ export class TopMenuComponent {
 
     this.setActiveItem(itemName);
     event.preventDefault();
+    this.router.navigate(['/dashboard']);
     this.newsService.getNews(NewsSelection.Top);
   }
 
@@ -29,6 +32,14 @@ export class TopMenuComponent {
 
     this.setActiveItem(itemName);
     event.preventDefault();
+    this.router.navigate(['/dashboard']);
     this.newsService.getNews(NewsSelection.New);
+  }
+
+  getCsv(itemName: string, event: Event) {
+
+    this.setActiveItem(itemName);
+    event.preventDefault();
+    this.router.navigate(['/download']);
   }
 }

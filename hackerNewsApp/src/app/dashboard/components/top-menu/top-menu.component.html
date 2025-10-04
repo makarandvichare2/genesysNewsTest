@@ -21,6 +21,13 @@
       class="nav-link"
       >Latest News</a
     >
+    <span class="nav-divider"></span>
+    <a
+      (click)="getCsv('Download', $event)"
+      [class.active]="activeItem === 'Download'"
+      class="nav-link"
+      >Download</a
+    >
   </div>
 
   <div class="nav-right">

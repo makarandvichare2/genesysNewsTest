@@ -47,7 +47,7 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
           }
         }),
         switchMap(([_, pageInfo]) => {
-          return this.combinedNewsInfo(pageInfo);
+          return this.newsService.combinedNewsInfo(pageInfo);
         }),
         catchError(error => {
           this.newsResponse.error = error;
@@ -60,20 +60,5 @@ export class NewsDashBoardComponent implements OnInit, OnDestroy {
           this.newsResponse.loading = false;
           this.newsResponse.error = null;
         })
-  }
-
-  private combinedNewsInfo(pageInfo: Pagination) {
-    return this.newsService.newItemIdsCache$.pipe(
-      switchMap((newsItemsIds: number[]) => {
-        if (newsItemsIds.length === 0) {
-          return EMPTY;
-        }
-        const pagedNewsItemIds = newsItemsIds.slice(
-          pageInfo.currentPage * pageInfo.pageSize,
-          (pageInfo.currentPage + 1) * pageInfo.pageSize);
-        const newsDetail$ = pagedNewsItemIds.map(itemId => this.newsService.getNewsItemData(itemId)
-        );
-        return forkJoin(newsDetail$);
-      }));
   }
 }

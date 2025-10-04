@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, shareReplay, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, forkJoin, Observable, shareReplay, switchMap } from 'rxjs';
 import { INewsItem } from '../interfaces/news-item.interface';
 import { environment } from '../../common/enviornment/enviornment.dev';
 import { ApiEndPoints } from '../constants/api-endpoints.const';
@@ -8,7 +8,7 @@ import { NewsSelection } from '../enums/news-selection.enum';
 import { Pagination } from '../models/pagination.model';
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root'
 })
 export class NewsService {
 
@@ -65,5 +65,20 @@ export class NewsService {
       }),
       shareReplay(1)
     )
+  }
+
+  combinedNewsInfo(pageInfo: Pagination) {
+    return this.newItemIdsCache$.pipe(
+      switchMap((newsItemsIds: number[]) => {
+        if (newsItemsIds.length === 0) {
+          return EMPTY;
+        }
+        const pagedNewsItemIds = newsItemsIds.slice(
+          pageInfo.currentPage * pageInfo.pageSize,
+          (pageInfo.currentPage + 1) * pageInfo.pageSize);
+        const newsDetail$ = pagedNewsItemIds.map(itemId => this.getNewsItemData(itemId)
+        );
+        return forkJoin(newsDetail$);
+      }));
   }
 }
